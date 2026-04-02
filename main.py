@@ -51,29 +51,34 @@ class Battle:
 
 # Class with features and methods for all the entities of the game
 class Entity:
-    def __init__(self, name: str, hp: int, level: int, attack: int):
+    def __init__(self, name: str, hp: int, level: int, base_attack: int):
         self.name = name
         self.hp = hp
         self.level = level
-        self.attack = attack
+        self.weapon_attack = 0
+        self.base_attack = base_attack
         self.max_hp = hp
         self.xp = 0
         self.max_xp_per_level = 50
         self.cash = 0
         self.potions = 0
 
+    def get_attack(self):
+        return self.base_attack + self.weapon_attack
+
     def gain_xp(self, amount: int):
         self.xp += amount
-        if self.xp >= self.max_xp_per_level:
+        # Loop to make sure it level up even 2 levels at once
+        while self.xp >= self.max_xp_per_level:
+            self.xp = self.xp - self.max_xp_per_level
             self.level_up()
-            self.xp = 0
 
     def level_up(self) -> None:
         self.hp = self.max_hp  # retore hp
         self.level += 1  # level up
         self.hp += 10  # upgrade hp
         self.max_hp += 10  # upgrade min xp for next level
-        self.attack += 10  # upgrade damage
+        self.base_attack += 10  # upgrade damage
         self.max_xp_per_level += 30
         print(f"{self.name} did level-up to level {self.level}!")
 
@@ -84,7 +89,8 @@ class Entity:
         self.cash -= amount
 
     def do_attack(self, target):
-        damage = max(1, random.randint(self.attack - 5, self.attack + 5))
+        base = self.get_attack()
+        damage = max(1, random.randint(base - 5, base + 5))
         is_dead = target.take_damage(damage)
         if is_dead is True:
             return -1
@@ -98,9 +104,12 @@ class Entity:
         return False
 
     def use_potion(self) -> None:
+        if self.potions <= 0:
+            return
         potions = [15, 20, 25]
         amount = random.choice(potions)
         self.heal(amount)
+        self.potions -= 1
         print(f"\nPotion used: +{amount} hp\n")
 
     def heal(self, amount: int) -> None:
@@ -121,7 +130,7 @@ def gen_player():
     return player
 
 
-def gen_monster() -> object:
+def gen_monster(player_level: int) -> object:
     monster_list = ["ork",
                     "slime",
                     "vampire bat",
@@ -129,19 +138,11 @@ def gen_monster() -> object:
                     "spider",
                     "Skeleton"]
     name = random.choice(monster_list)
-    level = random.randint(1, 4)
-    if level == 1:
-        monster_l1 = Entity(name, 90, 1, 15)
-        return monster_l1
-    elif level == 2:
-        monster_l2 = Entity(name, 105, 2, 20)
-        return monster_l2
-    elif level == 3:
-        monster_l3 = Entity(name, 120, 3, 30)
-        return monster_l3
-    elif level == 4:
-        boss = Entity(name, 150, 4, 35)
-        return boss
+    level = random.randint(player_level + 1, player_level + 2)
+    base_hp = 80 + (20 * level)
+    base_atk = 10 + (5 * level)
+    monster = Entity(name, base_hp, level, base_atk)
+    return monster
 
 
 def store(player: object):
@@ -170,21 +171,21 @@ def store(player: object):
                 print("You don't have cash enough")
             else:
                 player.spend_money(50)
-                player.attack += 5
+                player.weapon_attack = 5
                 print("\nBought Medium Sword\n+5 attack\n-50$\n")
         elif store_choice == 3:
             if player.cash < 100:
                 print("You don't have cash enough")
             else:
                 player.spend_money(100)
-                player.attack += 15
+                player.weapon_attack = 15
                 print("Bought Epic Sword\n+15 attack\n-100$")
         elif store_choice == 4:
             if player.cash < 250:
                 print("You don't have cash enough")
             else:
                 player.spend_money(250)
-                player.attack += 50
+                player.weapon_attack = 50
                 print("Bought Legendary\n+50 attack\n-250$)\n")
 
 
@@ -226,7 +227,7 @@ def game_loop():
 
         elif choice == 2:
             store(player)
-        
+
         elif choice == 3:
             inventory(player)
 
@@ -240,7 +241,7 @@ def game_loop():
                 print(f"{amount}$\n")
 
             elif event == "find a monster":
-                monster = gen_monster()
+                monster = gen_monster(player.level)
                 battle = Battle(player, monster)
                 ret_battle = battle.start()
                 if ret_battle == -1:
@@ -251,6 +252,7 @@ def game_loop():
                     if choice == 1:
                         player.heal(player.max_hp)
                         player.xp = 0
+                        player.cash = 0
                         continue
                     elif choice == 2:
                         print("Game over!")
