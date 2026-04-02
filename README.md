@@ -1,8 +1,7 @@
 *This project simulates a simplified RPG.
 
 Created by Carlos Alvares.
-# music_recommendation_tool
-
+# mini RPG
 ## Description
 This project implements a simple role-playing game on terminal.
 The game get your username, creating your player. You can explore and fight different level of monsters. The game has different level of monster increasing the difficulty.
@@ -11,11 +10,13 @@ The game get your username, creating your player. You can explore and fight diff
 
 
 ### The challenges and solutions
-• .
+• Create different enviroments(main menu, store, inventory)
+- I used infinite loops for each enviroment with an exit option.
 
-• .
+• Upgrade the player
+- System of xp gaining + level up, store with itens to upgrade player damage, store with item to heal the player after fights
 
-• .
+• 
 
 ## System Design
 
@@ -62,6 +63,11 @@ python3 main.py
 ## Limitations
 .
 
-Future improvements could include:
-- Store to buy potions and upgrades.
-- Variable damage in the attacking system.
+Improvements to include:
+[] Equipment system
+[] Change the system design increasing modular organization: allow to improve more in the future
+[] Critic attack: random attack hits more
+[] Better enemy generation: factory model
+[] Storytelling
+[x] Store to buy potions and upgrades.
+[x] Variable damage in the attacking system.
