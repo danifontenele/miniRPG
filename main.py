@@ -60,15 +60,22 @@ class Entity:
         self.max_hp = hp
         self.xp = 0
         self.max_xp_per_level = 50
+        self.cash = 0
 
-    def level_up(self):
+    def level_up(self) -> None:
         self.hp = self.max_hp
         self.level += 1
         self.hp += 10
         self.max_hp += 10
         self.attack += 10
         self.max_xp_per_level += 30
-        print(f"{self.player} did level-up to level {self.level}!")
+        print(f"{self.name} did level-up to level {self.level}!")
+
+    def gain_money(self, amount: int) -> None:
+        self.cash += amount
+
+    def spend_money(self, amount: int) -> None:
+        self.cash -= amount
 
     def do_attack(self, target):
         is_dead = target.take_damage(self.attack)
@@ -84,7 +91,7 @@ class Entity:
         return False
 
     def heal(self, amount: int) -> None:
-        self.hp += amount
+        self.hp = min(self.hp + amount, self.max_hp)
 
 
 def gen_event():
@@ -126,7 +133,8 @@ def game_loop():
     while True:
         print(f"{player.name}\n"
               f"level: {player.level}\n"
-              f"hp: {player.hp}")
+              f"hp: {player.hp}\n"
+              f"coins: {player.cash}\n")
         choice = int(input("Choices:\n"
                            "1)Explore\n"
                            "2)Store\n"
@@ -137,20 +145,25 @@ def game_loop():
         elif choice == 1:
             event = gen_event()
             print(f"\nYou did {event}!\n")
-        if event == "find a monster":
-            monster = gen_monster()
-            battle = Battle(player, monster)
-            ret_battle = battle.start()
-            if ret_battle == -1:
-                print("You died!")
-                choice = int(input("Choices:\n"
-                                   "1) Try gain\n"
-                                   "2) Give up\n"))
-                if choice == 1:
-                    continue
-                elif choice == 2:
-                    print("Game over!")
-                    return
+            if event == "find a treasure":
+                player.gain_money(10)
+                print("+10$\n")
+            elif event == "find a monster":
+                monster = gen_monster()
+                battle = Battle(player, monster)
+                ret_battle = battle.start()
+                if ret_battle == -1:
+                    print("You died!")
+                    choice = int(input("Choices:\n"
+                                       "1) Try gain\n"
+                                       "2) Give up\n"))
+                    if choice == 1:
+                        continue
+                    elif choice == 2:
+                        print("Game over!")
+                        return
+                if ret_battle == 1:
+                    print(f"You defeated {monster.name}!\n")
     print("Game finished!")
 
 

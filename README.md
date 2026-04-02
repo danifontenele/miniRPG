@@ -63,4 +63,5 @@ python3 main.py
 .
 
 Future improvements could include:
-- 
+- Store to buy potions and upgrades.
+- Variable damage in the attacking system.
