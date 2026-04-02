@@ -64,6 +64,7 @@ python3 main.py
 .
 
 Improvements to include:
+```
 [] Equipment system
 [] Change the system design increasing modular organization: allow to improve more in the future
 [] Critic attack: random attack hits more
@@ -71,3 +72,4 @@ Improvements to include:
 [] Storytelling
 [x] Store to buy potions and upgrades.
 [x] Variable damage in the attacking system.
+```
