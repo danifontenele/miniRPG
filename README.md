@@ -26,17 +26,18 @@ The game get your username, creating your player. You can explore and fight diff
 main.py
 ```
 
-## The algorithm
-For each track in the dataset:
-
-1. 
-
 ## Project Structure
 ```
 miniRT/
 │
 ├── main.py
-└── 
+└── source/
+	├── battle.py
+	├── entity.py
+	├── generators.py
+	├── inventory.py
+	└── store.py
+
 ```
 ## How to Run
 ```
@@ -113,7 +114,7 @@ Choices:
 2)Store
 3)Inventory
 0)Exit
-3
+3 // input
 
 === Inventory ===
 
@@ -132,7 +133,7 @@ Choices:
 2)Store
 3)Inventory
 0)Exit
-0
+0 // input
 
 Closing the game...
 Game finished!
@@ -144,12 +145,12 @@ Game finished!
 
 ## Improvements to include:
 ```
-[] Create an inventory with weapons to choose
-[x] Equipment system
-[] Change the system design increasing modular organization: allow to improve more in the future
-[] Critic attack: random attack hits more
-[x] Better enemy generation: factory model
-[] Storytelling
+[] Create an inventory with weapons to choose.
+[x] Equipment system.
+[x] Change the system design increasing modular organization: allow to improve more in the future.
+[] Critic attack: random attack hits more.
+[x] Better enemy generation: factory model.
+[] Storytelling: events in a row.
 [x] Store to buy potions and upgrades.
 [x] Variable damage in the attacking system.
 ```

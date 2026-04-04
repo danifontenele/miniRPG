@@ -7,9 +7,10 @@ class Battle:
         choice = -1
         while choice < 1 or choice > 3:
             try:
-                choice = int(input("action:\n1)attack\n2)heal\n3)run\n"))
+                print("actions:\n1)attack\n2)heal\n3)run\n")
+                choice = int(input("choice: "))
             except ValueError:
-                print("invlaid choice, try again!")
+                print("\ninvlaid choice, try again!\n")
         return choice
 
     def start(self):

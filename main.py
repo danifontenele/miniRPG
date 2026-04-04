@@ -16,15 +16,27 @@ def game_loop():
               f"hp: {player.hp}/{player.max_hp}\n"
               f"xp: {player.xp}/{player.max_xp_per_level}\n"
               f"coins: {player.cash}\n")
-        choice = int(input("Choices:\n"
-                           "1)Explore\n"
-                           "2)Store\n"
-                           "3)Inventory\n"
-                           "0)Exit\n"))
-
+        print("Actions:\n"
+              "1)Explore\n"
+              "2)Store\n"
+              "3)Inventory\n"
+              "0)Exit\n")
+        try:
+            choice = int(input("Choice: "))
+        except ValueError:
+            print("\nInvalid option, try again!\n")
+            continue
         if choice == 0:
-            print("\nClosing the game...")
-            break
+            try:
+                confirm = int(input("\nDo you want to quit the game?\n"
+                                    "1) Yes\n"
+                                    "2) No\n"))
+                if confirm == 1:
+                    print("\nClosing the game...")
+                    break
+            except ValueError:
+                print("\nInvalid option, try again!\n")
+            continue
 
         elif choice == 2:
             store(player)
