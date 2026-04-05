@@ -145,12 +145,12 @@ Game finished!
 
 ## Improvements to include:
 ```
-[] Create an inventory with weapons to choose.
+[] Create an inventory with weapons to select.
+[] Critic attack: random attack hits more.
+[] Storytelling: events in a row.
 [x] Equipment system.
 [x] Change the system design increasing modular organization: allow to improve more in the future.
-[] Critic attack: random attack hits more.
 [x] Better enemy generation: factory model.
-[] Storytelling: events in a row.
 [x] Store to buy potions and upgrades.
 [x] Variable damage in the attacking system.
 ```
